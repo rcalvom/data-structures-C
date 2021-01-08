@@ -9,6 +9,9 @@ typedef struct linked_queue{
     int size;
 } linked_queue_t;
 
+#define MAX_TOSTRING 1024
+#define MAX_STRING_VALUE 32
+
 void enqueue(linked_queue_t *queue, void *value);
 void* dequeue(linked_queue_t *queue);
 void* peek(linked_queue_t *queue);

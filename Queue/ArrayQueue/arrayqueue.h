@@ -1,11 +1,18 @@
 typedef struct array_queue{
-    float val[8];
+    void **values;
+    int front;
+    int rear;
     int size;
+    int capacity;
 } array_queue_t;
 
+#define INITIAL_CAPACITY 8
+#define MAX_TOSTRING 1024
+#define MAX_STRING_VALUE 32
 
-/*void enqueue(queue_t *queue, float val);
-float dequeue(queue_t *queue);
-float peek(queue_t *queue);
-queue_t* new_queue();
-void delete_queue(queue_t *queue);*/
+void enqueue(array_queue_t *queue, void *value);
+void* dequeue(array_queue_t *queue);
+void* peek(array_queue_t *queue);
+array_queue_t* new_queue();
+void delete_queue(array_queue_t *queue);
+char* toString(array_queue_t *queue);

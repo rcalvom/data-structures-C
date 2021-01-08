@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <errno.h>
+#include <stdio.h>
 #include <string.h>
 #include "linkedqueue.h"
 
@@ -72,10 +73,10 @@ void delete_queue(linked_queue_t *queue){
 }
 
 char* toString(linked_queue_t *queue){
-    char* str = malloc(1024 * sizeof(char));
+    char* str = malloc(MAX_TOSTRING * sizeof(char));
     strcat(str, "[");
     queue_node_t *node = queue->head;
-    char* node_str = malloc(32 * sizeof(char));
+    char* node_str = malloc(MAX_STRING_VALUE * sizeof(char));
     for(int i = 1; i <= queue->size; i++){
         int node_value = *((int *)(node->value));
         sprintf(node_str, "%i", node_value);
@@ -86,5 +87,6 @@ char* toString(linked_queue_t *queue){
         node = node->next;
     }
     strcat(str, "]");
+    free(node_str);
     return str;
 }
