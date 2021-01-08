@@ -1,54 +1,54 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <errno.h>
+#include <string.h>
 #include "linkedqueue.h"
 
-void enqueue(queue_t *queue, float val) {
+void enqueue(linked_queue_t *queue, void *value) {
     if(queue->size == 0){
-        queue->tail->val = val;
+        queue->tail->value = value;
     }else{
-        queue->tail->next = (node_t *) malloc(sizeof(node_t));
+        queue->tail->next = (queue_node_t *) malloc(sizeof(queue_node_t));
         if(queue->tail->next == NULL){
             perror("Error in malloc.\n");
             exit(EXIT_FAILURE);
         }
         queue->tail = queue->tail->next;
-        queue->tail->val = val;
+        queue->tail->value = value;
         queue->tail->next = NULL;
     }
     queue->size++;
 }
 
-float dequeue(queue_t *queue) {
-    float val = 0.0f;
+void* dequeue(linked_queue_t *queue) {
+    void *val = NULL;
     if(queue->size < 1){
         perror("Trying to dequeue an empty queue.\n");
         exit(EXIT_FAILURE);
     }else if(queue->size == 1){
-        val = queue->head->val;
-        queue->head->val = 0.0f;
+        val = queue->head->value;
+        queue->head->value = NULL;
     }else{
-        node_t *node = queue->head;
+        queue_node_t *node = queue->head;
         queue->head = queue->head->next;
-        val = node->val;
+        val = node->value;
         free(node);
     }
     queue->size--;
     return val;
 }
 
-float peek(queue_t *queue) {
+void* peek(linked_queue_t *queue) {
     if(queue->size == 0){
         perror("Trying to peek an empty queue.\n");
         exit(EXIT_FAILURE);
     }else{
-        return queue->head->val;
+        return queue->head->value;
     }
 }
 
-queue_t* new_queue(){
-    queue_t *queue = (queue_t*) malloc(sizeof(queue_t));
-    queue->head = (node_t *) malloc(sizeof(node_t));
+linked_queue_t* new_queue(){
+    linked_queue_t *queue = (linked_queue_t*) malloc(sizeof(linked_queue_t));
+    queue->head = (queue_node_t *) malloc(sizeof(queue_node_t));
     if(queue == NULL|| queue->head == NULL){
         perror("Error in malloc.\n");
         exit(EXIT_FAILURE);
@@ -60,13 +60,31 @@ queue_t* new_queue(){
     return queue;
 }
 
-void delete_queue(queue_t *queue){
-    node_t *node1 = queue->head;
-    node_t *node2 = queue->head->next;
+void delete_queue(linked_queue_t *queue){
+    queue_node_t *node1 = queue->head;
+    queue_node_t *node2 = queue->head->next;
     while(node2 != NULL){
         free(node1);
         node1 = node2;
         node2 = node2->next;
     }
     free(queue);
+}
+
+char* toString(linked_queue_t *queue){
+    char* str = malloc(1024 * sizeof(char));
+    strcat(str, "[");
+    queue_node_t *node = queue->head;
+    char* node_str = malloc(32 * sizeof(char));
+    for(int i = 1; i <= queue->size; i++){
+        int node_value = *((int *)(node->value));
+        sprintf(node_str, "%i", node_value);
+        strcat(str, node_str);
+        if(i != queue->size){
+            strcat(str, ", ");
+        }
+        node = node->next;
+    }
+    strcat(str, "]");
+    return str;
 }

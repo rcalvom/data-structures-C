@@ -1,16 +1,17 @@
-typedef struct node {
-    float val;
-    struct node *next;
-} node_t;
+typedef struct queue_node {
+    void *value;
+    struct queue_node *next;
+} queue_node_t;
 
-typedef struct queue{
-    struct node *head;
-    struct node *tail;
+typedef struct linked_queue{
+    queue_node_t *head;
+    queue_node_t *tail;
     int size;
-} queue_t;
+} linked_queue_t;
 
-void enqueue(queue_t *queue, float val);
-float dequeue(queue_t *queue);
-float peek(queue_t *queue);
-queue_t* new_queue();
-void delete_queue(queue_t *queue);
+void enqueue(linked_queue_t *queue, void *value);
+void* dequeue(linked_queue_t *queue);
+void* peek(linked_queue_t *queue);
+linked_queue_t* new_queue();
+void delete_queue(linked_queue_t *queue);
+char* toString(linked_queue_t *queue);
