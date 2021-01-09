@@ -69,14 +69,19 @@ void delete_queue(linked_queue_t *queue){
         node1 = node2;
         node2 = node2->next;
     }
+    free(node1);
     free(queue);
 }
 
 char* toString(linked_queue_t *queue){
     char* str = malloc(MAX_TOSTRING * sizeof(char));
-    strcat(str, "[");
-    queue_node_t *node = queue->head;
     char* node_str = malloc(MAX_STRING_VALUE * sizeof(char));
+    if(str == NULL || node_str == NULL){
+        perror("Error in malloc.\n");
+        exit(EXIT_FAILURE);
+    }
+    queue_node_t *node = queue->head;
+    strcat(str, "[");
     for(int i = 1; i <= queue->size; i++){
         int node_value = *((int *)(node->value));
         sprintf(node_str, "%i", node_value);
@@ -85,6 +90,7 @@ char* toString(linked_queue_t *queue){
             strcat(str, ", ");
         }
         node = node->next;
+
     }
     strcat(str, "]");
     free(node_str);
