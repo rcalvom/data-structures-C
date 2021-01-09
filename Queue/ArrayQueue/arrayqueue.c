@@ -6,7 +6,11 @@
 
 void enqueue(array_queue_t *queue, void *value){
     if((queue->rear + 1) % queue->capacity == queue->front){
-        void **new_values = malloc(2 * queue->capacity * sizeof(void**));
+        void **new_values = malloc(2 * queue->capacity * sizeof(void*));
+        if(new_values == NULL){
+            perror("Error in malloc.\n");
+            exit(EXIT_FAILURE);
+        }
         int start = (queue->front + 1) % queue->capacity;
         if(start < 2){
             for(int i = 0; i < queue->capacity - 1; i++){
@@ -73,8 +77,12 @@ void delete_queue(array_queue_t *queue){
 
 char* toString(array_queue_t *queue){
     char *str = malloc(MAX_TOSTRING * sizeof(char));
-    strcat(str, "[");
     char *node_str = malloc(MAX_STRING_VALUE * sizeof(char));
+    if(str == NULL || node_str == NULL){
+        perror("Error in malloc.\n");
+        exit(EXIT_FAILURE);
+    }
+    strcat(str, "[");
     for(int i = 1; i <= queue->size; i++){
         int value = *((int*)*(queue->values + (queue->front + i) % queue->capacity));
         sprintf(node_str, "%i", value);
