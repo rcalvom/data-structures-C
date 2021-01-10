@@ -3,7 +3,15 @@
 #include <errno.h>
 #include "arraylist.h"
 
-int get(array_list_t *list, int index) {
+array_list_t* new_array_list() {
+    array_list_t *list = (array_list_t*) malloc(sizeof(array_list_t));
+    list->elements = malloc(INITIAL_CAPACITY * sizeof(void*));
+    list->capacity = INITIAL_CAPACITY;
+    list->size = 0;
+    return list;
+}
+
+void* get(array_list_t *list, int index) {
     if (index < 0 || index > list->size - 1) {
         perror("Invalid index.\n");
         exit(EXIT_FAILURE);
@@ -11,20 +19,20 @@ int get(array_list_t *list, int index) {
     return list->elements[index];
 }
 
-int find(array_list_t *list, int element) {
+int find(array_list_t *list, void *element) {
     for (int i = 0; i < list->size; i++)
         if (list->elements[i] == element)
             return i;
     return -1;
 }
 
-void insert(array_list_t *list, int index, int value) {
+void insert(array_list_t *list, int index, void *value) {
     if (index < 0 || index > list->size) {
         perror("Invalid index.\n");
         exit(EXIT_FAILURE);
     }
     if (list->size == list->capacity) {
-        int *new_array = malloc(2 * list->capacity * sizeof(int));
+        void **new_array = malloc(2 * list->capacity * sizeof(void*));
         for (int i = 0; i < list->size; i++) {
             new_array[i] = list->elements[i];
         }
@@ -36,6 +44,14 @@ void insert(array_list_t *list, int index, int value) {
     }
     list->elements[index] = value;
     list->size++;
+}
+
+void push_front(array_list_t *list, void *value) {
+    insert(list, 0, value);
+}
+
+void push_back(array_list_t *list, void *value) {
+    insert(list, list->size, value);
 }
 
 void delete(array_list_t *list, int index) {
@@ -55,8 +71,12 @@ void delete(array_list_t *list, int index) {
 
 void make_empty(array_list_t *list) {
     free(list->elements);
-    list->elements = malloc(list->capacity * sizeof(int));
+    list->elements = malloc(list->capacity * sizeof(void*));
     list->size = 0;
+}
+
+char* to_string(array_list_t *list) {
+    return NULL;
 }
 
 void print_list(array_list_t *list) {
@@ -65,12 +85,12 @@ void print_list(array_list_t *list) {
         return;
     }
     if (list->size == 1) {
-        printf("[%d]", list->elements[0]);
+        printf("[%d]", *(int*) list->elements[0]);
         return;
     }
     for (int i = 0; i < list->size; i++) {
-        if (i == 0) printf("[%d, ", list->elements[i]);
-        else if (i == list->size - 1) printf("%d]\n", list->elements[i]);
-        else printf("%d, ", list->elements[i]);
+        if (i == 0) printf("[%d, ", *(int*) list->elements[i]);
+        else if (i == list->size - 1) printf("%d]\n", *(int*) list->elements[i]);
+        else printf("%d, ", *(int*) list->elements[i]);
     }
 }
