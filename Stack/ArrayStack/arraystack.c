@@ -69,14 +69,49 @@ char* toString(array_stack_t *stack){
         exit(EXIT_FAILURE);
     }
     strcat(str, "[");
-    for(int i = 1; i <= stack->size; i++){
+    for(int i = 0; i < stack->size; i++){
         int value = *((int*)*(stack->values + stack->top - i));
         sprintf(node_str, "%i", value);
         strcat(str, node_str);
-        if(i != stack->size){
+        if(i != stack->size - 1){
             strcat(str, ", ");
         }
     }
     strcat(str, "]");
     return str;
 }
+
+/*int main(){
+    int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    char* result;
+
+    array_stack_t *stack = new_stack();
+
+    for(int i = 0; i < 10; i++){
+        push(stack, &values[i]);
+    }
+
+    result = toString(stack);
+    printf("%s\n", result); 
+    free(result);   
+
+    for(int i = 0; i < 3; i++){
+        pop(stack);
+    }
+
+    result = toString(stack);
+    printf("%s\n", result);
+    free(result);
+
+    for(int i = 0; i < 10; i++){
+        push(stack, &values[i]);
+    }
+
+    result = toString(stack);
+    printf("%s\n", result);
+    free(result);
+
+    delete_stack(stack);
+    free(result);
+    return 0;
+}*/

@@ -94,3 +94,36 @@ char* toString(array_queue_t *queue){
     strcat(str, "]");
     return str;
 }
+
+int main(){
+    int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    char* result;
+
+
+    array_queue_t *queue = new_queue();
+
+    for(int i = 0; i < 10; i++){
+        enqueue(queue, &values[i]);
+    }
+
+    result = toString(queue);
+    printf("%s\n", result);
+
+    for(int i = 0; i < 3; i++){
+        dequeue(queue);
+    }
+
+    result = toString(queue);
+    printf("%s\n", result);
+
+    for(int i = 0; i < 10; i++){
+        enqueue(queue, &values[i]);
+    }
+
+    result = toString(queue);
+    printf("%s\n", result);
+
+    delete_queue(queue);
+    free(result);
+    return 0;
+}

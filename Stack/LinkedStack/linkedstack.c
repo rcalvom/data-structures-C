@@ -97,3 +97,35 @@ char* toString(linked_stack_t *stack){
     free(node_str);
     return str;
 }
+
+/*int main(){
+    int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    char* result;
+
+    linked_stack_t *stack = new_stack();
+
+    for(int i = 9; i >= 0; i--){
+        push(stack, &values[i]);
+    }
+
+    result = toString(stack);
+    printf("%s\n", result);    
+
+    for(int i = 0; i < 3; i++){
+        pop(stack);
+    }
+
+    result = toString(stack);
+    printf("%s\n", result);
+
+    for(int i = 0; i < 10; i++){
+        push(stack, &values[i]);
+    }
+
+    result = toString(stack);
+    printf("%s\n", result);
+
+    delete_stack(stack);
+    free(result);
+    return 0;
+}*/
