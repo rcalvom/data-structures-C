@@ -21,7 +21,7 @@ void enqueue(array_queue_t *queue, void *value){
                 *(new_values + i) = *(queue->values + start + i);
             }
             for(int i = 0; i < queue->rear + 1; i++){
-                *(new_values + queue->capacity - start + i) = queue->values + i;
+                *(new_values + queue->capacity - start + i) = *(queue->values + i);
             }
         }
         free(queue->values);
@@ -95,7 +95,7 @@ char* toString(array_queue_t *queue){
     return str;
 }
 
-int main(){
+/*int main(){
     int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     char* result;
 
@@ -118,6 +118,7 @@ int main(){
 
     for(int i = 0; i < 10; i++){
         enqueue(queue, &values[i]);
+        enqueue(queue, &values[i]);
     }
 
     result = toString(queue);
@@ -126,4 +127,4 @@ int main(){
     delete_queue(queue);
     free(result);
     return 0;
-}
+}*/
