@@ -81,7 +81,7 @@ char* toString(array_stack_t *stack){
     return str;
 }
 
-int main(){
+/*int main(){
     int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     char* result;
 
@@ -105,4 +105,4 @@ int main(){
     delete_stack(stack);
     free(result);
     return 0;
-}
+}*/
