@@ -97,7 +97,7 @@ char* toString(linked_queue_t *queue){
     return str;
 }
 
-int main(){
+/*int main(){
     int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     char* result;
 
@@ -118,7 +118,8 @@ int main(){
     result = toString(queue);
     printf("%s\n", result);
 
-    for(int i = 0; i < 8; i++){
+    for(int i = 0; i < 10; i++){
+        enqueue(queue, &values[i]);
         enqueue(queue, &values[i]);
     }
 
@@ -128,4 +129,4 @@ int main(){
     delete_queue(queue);
     free(result);
     return 0;
-}
+}*/

@@ -62,8 +62,8 @@ void delete_stack(array_stack_t *stack){
 }
 
 char* toString(array_stack_t *stack){
-    char *str = malloc(MAX_TOSTRING * sizeof(char));
-    char *node_str = malloc(MAX_STRING_VALUE * sizeof(char));
+    char *str = (char*) malloc(MAX_TOSTRING * sizeof(char) + 1);
+    char *node_str = (char*) malloc(MAX_STRING_VALUE * sizeof(char) + 1);
     if(str == NULL || node_str == NULL){
         perror("Error in malloc.\n");
         exit(EXIT_FAILURE);
@@ -81,19 +81,18 @@ char* toString(array_stack_t *stack){
     return str;
 }
 
-/*int main(){
+int main(){
     int values[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     char* result;
 
     array_stack_t *stack = new_stack();
 
-    for(int i = 0; i < 10; i++){
+    for(int i = 9; i >= 0; i--){
         push(stack, &values[i]);
     }
 
     result = toString(stack);
-    printf("%s\n", result); 
-    free(result);   
+    printf("%s\n", result);    
 
     for(int i = 0; i < 3; i++){
         pop(stack);
@@ -101,17 +100,9 @@ char* toString(array_stack_t *stack){
 
     result = toString(stack);
     printf("%s\n", result);
-    free(result);
 
-    for(int i = 0; i < 10; i++){
-        push(stack, &values[i]);
-    }
-
-    result = toString(stack);
-    printf("%s\n", result);
-    free(result);
 
     delete_stack(stack);
     free(result);
     return 0;
-}*/
+}
