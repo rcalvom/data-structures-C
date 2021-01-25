@@ -1,11 +1,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <errno.h>
+#include <string.h>
 #include "arraylist.h"
 
 array_list_t* new_array_list() {
     array_list_t *list = (array_list_t*) malloc(sizeof(array_list_t));
-    list->elements = malloc(INITIAL_CAPACITY * sizeof(void*));
+    list->elements = (void**) malloc(INITIAL_CAPACITY * sizeof(void*));
     list->capacity = INITIAL_CAPACITY;
     list->size = 0;
     return list;
@@ -32,7 +33,7 @@ void insert(array_list_t *list, int index, void *value) {
         exit(EXIT_FAILURE);
     }
     if (list->size == list->capacity) {
-        void **new_array = malloc(2 * list->capacity * sizeof(void*));
+        void **new_array = (void**) malloc(2 * list->capacity * sizeof(void*));
         for (int i = 0; i < list->size; i++) {
             new_array[i] = list->elements[i];
         }
@@ -54,7 +55,7 @@ void push_back(array_list_t *list, void *value) {
     insert(list, list->size, value);
 }
 
-void delete(array_list_t *list, int index) {
+void remove(array_list_t *list, int index) {
     if (index < 0 || index > list->size - 1) {
         perror("Invalid index.\n");
         exit(EXIT_FAILURE);
@@ -71,26 +72,37 @@ void delete(array_list_t *list, int index) {
 
 void make_empty(array_list_t *list) {
     free(list->elements);
-    list->elements = malloc(list->capacity * sizeof(void*));
+    list->elements = (void**) malloc(list->capacity * sizeof(void*));
     list->size = 0;
 }
 
 char* to_string(array_list_t *list) {
-    return NULL;
-}
-
-void print_list(array_list_t *list) {
+    char* result = (char*) malloc(MAX_TOSTRING * sizeof(char));
+    char* node_str = (char*) malloc(MAX_STRING_VALUE * sizeof(char));
+    if (result == NULL || node_str == NULL) {
+        perror("Error in malloc.\n");
+        exit(EXIT_FAILURE);
+    }
     if (list->size == 0) {
-        printf("[]\n");
-        return;
+        strcat(result, "[]\n");
+    } else if (list->size == 1) {
+        int value = *(int*) list->elements[0];
+        sprintf(node_str, "%i", value);
+        strcat(result, "[");
+        strcat(result, node_str);
+        strcat(result, "]");
+    } else {
+        strcat(result, "[");
+        for (int i = 0; i < list->size; i++) {
+            int value = *(int*) list->elements[i];
+            sprintf(node_str, "%i", value);
+            strcat(result, node_str);
+            if (i != list->size - 1) {
+                strcat(result, ", ");
+            } else {
+                strcat(result, "]\n");
+            }
+        }
     }
-    if (list->size == 1) {
-        printf("[%d]", *(int*) list->elements[0]);
-        return;
-    }
-    for (int i = 0; i < list->size; i++) {
-        if (i == 0) printf("[%d, ", *(int*) list->elements[i]);
-        else if (i == list->size - 1) printf("%d]\n", *(int*) list->elements[i]);
-        else printf("%d, ", *(int*) list->elements[i]);
-    }
+    return result;
 }

@@ -12,6 +12,9 @@ typedef struct linked_list {
     struct node *tail;
 } linked_list_t;
 
+#define MAX_TOSTRING 1024
+#define MAX_STRING_VALUE 32
+
 linked_list_t* new_linked_list();
 bool empty(linked_list_t *list);
 void push_back(linked_list_t *list, void *key);
