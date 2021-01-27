@@ -16,6 +16,7 @@ void push(array_stack_t *stack, void *value){
         }
         free(stack->values);
         stack->values = new_values;
+        stack->capacity *= 2;
     }
     stack->top++;
     *(stack->values + stack->top) = value;

@@ -216,8 +216,7 @@ void toString_inorder_r(avl_tree_node_t *node, char *str){
 
 char* toString_inorder(avl_tree_t* tree){
     char *str = (char*) malloc(MAX_TOSTRING * sizeof(char) + 1);
-    char *node_str = (char*) malloc(MAX_STRING_VALUE * sizeof(char) + 1);
-    if(str == NULL || node_str == NULL){
+    if(str == NULL){
         perror("Error in malloc.\n");
         exit(EXIT_FAILURE);
     }
@@ -248,8 +247,7 @@ void toString_postorder_r(avl_tree_node_t *node, char *str){
 
 char* toString_postorder(avl_tree_t* tree){
     char *str = (char*) malloc(MAX_TOSTRING * sizeof(char) + 1);
-    char *node_str = (char*) malloc(MAX_STRING_VALUE * sizeof(char) + 1);
-    if(str == NULL || node_str == NULL){
+    if(str == NULL){
         perror("Error in malloc.\n");
         exit(EXIT_FAILURE);
     }
