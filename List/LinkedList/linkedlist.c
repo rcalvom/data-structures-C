@@ -158,22 +158,38 @@ int size(linked_list_t *list) {
 }
 
 char* to_string(linked_list_t *list) {
-    return NULL;
-}
-
-void print_list(linked_list_t *list) {
+    char* result = (char*) malloc(MAX_TOSTRING * sizeof(char));
+    char* node_str = (char*) malloc(MAX_STRING_VALUE * sizeof(char));
+    if (result == NULL || node_str == NULL) {
+        perror("Error in malloc.\n");
+        exit(EXIT_FAILURE);
+    }
     if (list->head == NULL) {
-        printf("[]\n"); return;
+        strcat(result, "[]\n");
+    } else if (list->size == 1) {
+        int value = *(int*) list->head->key;
+        sprintf(node_str, "%i", value);
+        strcat(result, "[");
+        strcat(result, node_str);
+        strcat(result, "]");
+    } else {
+        int value = *(int*) list->head->key;
+        sprintf(node_str, "%i", value);
+        strcat(result, "[");
+        strcat(result, node_str);
+        strcat(result, ", ");
+        node_t *current = list->head->next;
+        while (current->next != NULL) {
+            value = *(int*) current->key;
+            sprintf(node_str, "%i", value);
+            strcat(result, node_str);
+            strcat(result, ", ");
+            current = current->next;
+        }
+        value = *(int*) list->tail->key;
+        sprintf(node_str, "%i", value);
+        strcat(result, node_str);
+        strcat(result, "]\n");
     }
-    if (list->size == 1) {
-        printf("[%d]\n", *(int*) list->head->key);
-        return;
-    }
-    printf("[%d ", *(int*) list->head->key);
-    node_t *current = list->head->next;
-    while (current->next != NULL) {
-        printf("%d ", *(int*) current->key);
-        current = current->next;
-    }
-    printf("%d]\n", *(int*) list->tail->key);
+    return result;
 }
