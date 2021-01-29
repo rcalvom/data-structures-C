@@ -3,8 +3,7 @@
 #include <string.h>
 #include <errno.h>
 #include "bstree.h"
-
-// TODO: finish nearest_neightbors and level_traversal methods
+#include "../Queue/LinkedQueue/linkedqueue.h"
 
 bstree_t* new_bstree() {
     bstree_t *tree = (bstree_t*) malloc(sizeof(bstree_t));
@@ -125,7 +124,7 @@ char* range_search(node_t *tree, int x, int y) {
     return result;
 }
 
-char* nearest_neightboors(node_t *tree, int key) {
+char* nearest_neighbors(node_t *tree, int key) {
     node_t* node = find(tree, key);
     char* result = (char*) malloc(MAX_TOSTRING * sizeof(char));
     char* node_str = (char*) malloc(MAX_STRING_VALUE * sizeof(char));
@@ -140,7 +139,32 @@ char* nearest_neightboors(node_t *tree, int key) {
                 strcat(result, node_str);
             }
         } else {
-            return "Missing.\n";
+            if (node->parent == NULL) return "No neighbors.\n";
+            if (node->parent->key > node->key) {
+                printf("Here\n");
+                node_t *current = node->parent;
+                while (current->parent != NULL) {
+                    if (current->parent->key < node->key)
+                        current = current->parent;
+                    else break;
+                }
+                if (current->key < node->key) {
+                    sprintf(node_str, "%i", current->key);
+                    strcat(result, node_str);
+                    strcat(result, " ");
+                }
+                sprintf(node_str, "%i", node->parent->key);
+                strcat(result, node_str);
+            } else {
+                sprintf(node_str, "%i", node->parent->key);
+                strcat(result, node_str);
+                strcat(result, " ");
+                node_t* a = next(node);
+                if (a != NULL) {
+                    sprintf(node_str, "%i", a->key);
+                    strcat(result, node_str);
+                }
+            }
         }
     } else {
         if (node->key < key) {
@@ -152,8 +176,11 @@ char* nearest_neightboors(node_t *tree, int key) {
                 strcat(result, node_str);
             }
         } else {
-            sprintf(node_str, "%i", node->parent->key);
-            strcat(result, node_str);
+            if (node->parent != NULL) {
+                sprintf(node_str, "%i", node->parent->key);
+                strcat(result, node_str);
+                strcat(result, " ");
+            }
             sprintf(node_str, "%i", node->key);
             strcat(result, node_str);
         }
@@ -188,7 +215,7 @@ int size(node_t *tree) {
     return 1 + size(tree->left_child) + size(tree->right_child);
 }
 
-/*void print_level_traversal(node_t *tree) {
+void print_level_traversal(node_t *tree) {
     printf(level_traversal(tree));
 }
 
@@ -212,7 +239,7 @@ char* level_traversal(node_t *tree) {
     }
     strcat(result, "\n");
     return result;
-}*/
+}
 
 void print_in_order_traversal(node_t *tree) {
     char* result = (char*) malloc(MAX_TOSTRING * sizeof(char));
@@ -271,7 +298,7 @@ char* post_order_traversal(node_t *tree, char *res, char *node_str) {
     return res;
 }
 
-int main() {
+/* int main() {
     bstree_t* tree = new_bstree();
     if (empty(tree->root)) printf("Empty\n");
     insert(tree, 20);
@@ -284,8 +311,9 @@ int main() {
     insert(tree, 23);
     insert(tree, 15);
     if (empty(tree->root)) printf("Empty\n");
+    print_level_traversal(tree->root);
     print_in_order_traversal(tree->root);
-    erase(tree, 26);
+    erase(tree, 5);
     print_in_order_traversal(tree->root);
     printf("%d\n", find_min(tree->root)->key);
     printf("%d\n", find_max(tree->root)->key);
@@ -295,8 +323,8 @@ int main() {
     if (is_leaf(tree->root)) printf("Root is leaf\n");
     if (is_leaf(node)) printf("15 is leaf\n");
     printf(range_search(tree->root, 16, 28));
-    printf(nearest_neightboors(tree->root, 20));
+    printf(nearest_neighbors(tree->root, 15));
     printf("%d\n", height(tree->root));
     printf("%d\n", size(tree->root));
     return 0;
-}
+} */
